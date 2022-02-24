@@ -14,6 +14,7 @@ app.use(express.json())
 
 //Available Routes
 app.use("/api/auth",require("./routes/auth"))
+app.use("/api/user",require("./routes/userdata"))
 
 app.listen(port, () => {
     console.log(` backend listening at http://localhost:${port}`)
