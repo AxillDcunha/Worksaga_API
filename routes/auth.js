@@ -19,6 +19,7 @@ router.post('/createuser', [
     // If there are errors, return Bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log(errors.array())
         return res.status(400).json({ errors: errors.array() });
     }
     try {
