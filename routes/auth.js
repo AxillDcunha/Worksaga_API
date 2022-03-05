@@ -15,6 +15,7 @@ router.post('/createuser', [
     body('name', 'Enter a valid Name').isLength({ min: 3 }),
     body('email', 'Enter a valid Email').isEmail(),
     body('password', 'Password must be atleast 8 characters').isLength({ min: 8 }),
+    body('mobileNo', 'Enter a valid Number').isLength({ min: 10 }),
 ], async (req, res) => {
     console.log(res)
     // If there are errors, return Bad request and the errors
@@ -37,6 +38,7 @@ router.post('/createuser', [
             name: req.body.name,
             password: hashnsalt,
             email: req.body.email,
+            mobileNo:req.body.mobileNo
         });
         const data = {
             user: {

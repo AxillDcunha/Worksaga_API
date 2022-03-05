@@ -3,8 +3,6 @@ const User = require('../models/user');
 const router = express.Router();
 var fetchuser = require('../middleware/fetchuser');
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
 
 // ROUTE 1: update user location using: 
 //POST route "/api/user/updatelocation".
@@ -27,6 +25,8 @@ router.post('/updatelocation',fetchuser,async (req,res)=>{
   }
 })
 
+// ROUTE 2: delete user location using: 
+//POST route "/api/user/deletelocation".
 router.post('/deletelocation',fetchuser,async (req,res)=>{
   try {
       User.updateOne({ _id: req.user.id },
@@ -52,6 +52,8 @@ router.post('/deletelocation',fetchuser,async (req,res)=>{
   }
 })
 
+// ROUTE 3:delete all location history: 
+//POST route "/api/user/deletealllocation".
 router.post('/deletealllocation',fetchuser,async (req,res)=>{
   try {
       User.updateOne({ _id: req.user.id },

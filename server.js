@@ -4,9 +4,13 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const User = require('./models/user');
+const helmet=require('helmet')
 const Freelancer = require('./models/freelancer');
 ConnectionDB();
+
 const app = express()
+app.use(helmet());
+
 const port = process.env.PORT || 5000
 
 app.use(cors())
@@ -16,6 +20,7 @@ app.use(express.json())
 app.use("/api/auth",require("./routes/auth"))
 app.use("/api/user",require("./routes/userdata"))
 app.use("/api/userprofile",require("./routes/user/userprofile"))
+
 
 app.listen(port, () => {
     console.log(` backend listening at http://localhost:${port}`)
