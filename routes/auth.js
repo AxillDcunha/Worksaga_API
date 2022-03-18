@@ -32,13 +32,13 @@ router.post('/createuser', [
         }
         const salt = await bcrypt.genSalt(10);
         const hashnsalt = await bcrypt.hash(req.body.password, salt);
-        mobilenumber=parseInt(req.body.mobileNo)
+        mobilenumber = parseInt(req.body.mobileNo)
         // Create a new user
         user = await User.create({
             name: req.body.name,
             password: hashnsalt,
             email: req.body.email,
-            mobileNo:mobilenumber
+            mobileNo: mobilenumber
         });
         const data = {
             user: {

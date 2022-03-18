@@ -20,6 +20,7 @@ app.use(express.json())
 app.use("/api/auth",require("./routes/auth"))
 app.use("/api/user",require("./routes/userdata"))
 app.use("/api/userprofile",require("./routes/user/userprofile"))
+app.use("/api/freelancerprofile",require("./routes/freelancer/freelancerprofile"))
 
 
 app.listen(port, () => {

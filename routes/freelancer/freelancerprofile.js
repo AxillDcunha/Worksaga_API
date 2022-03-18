@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const User = require('../../models/user');
+const Freelancer = require('../../models/freelancer');
 const router = express.Router();
 var fetchuser = require('../../middleware/fetchuser');
 const path = require('path');
@@ -11,7 +11,7 @@ const { GridFsStorage } = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const fs = require('fs')
 let gfs;
-const hostname ="https://worksaga.herokuapp.com"
+const hostname = "https://worksaga.herokuapp.com"
 //create mongoose connection for multer 
 const conn = mongoose.createConnection(process.env.MONGO_URI);
 
@@ -43,13 +43,13 @@ const upload = multer({ storage });
 
 // @route POST /avatar
 // @desc  Uploads PROFILE PHOTO to Database
-router.post('/avatar',fetchuser, upload.single('file'),async (req, res) => {
-  User.findOneAndUpdate({ _id: req.user.id }, { $set: { Avatar: `${hostname}/api/userprofile/image/${req.file.filename}` } }, { new: true }, (err, doc) => {
+router.post('/avatar', fetchuser, upload.single('file'), async (req, res) => {
+  Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { Avatar: `${hostname}/api/userprofile/image/${req.file.filename}` } }, { new: true }, (err, doc) => {
     if (err) {
-      res.status(200).json({sucess:false,message:"Try again later something went wrong"})
+      res.status(200).json({ sucess: false, message: "Try again later something went wrong" })
     }
-    else{
-      res.status(200).json({sucess:true})
+    else {
+      res.status(200).json({ sucess: true })
     }
   });
 });
@@ -57,7 +57,7 @@ router.post('/avatar',fetchuser, upload.single('file'),async (req, res) => {
 
 // @route GET /image/:filename
 // @desc Display Image
-router.get('/image/:filename',fetchuser, (req, res) => {
+router.get('/image/:filename', fetchuser, (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
@@ -66,13 +66,13 @@ router.get('/image/:filename',fetchuser, (req, res) => {
       });
     }
     // Check if mimetype
-    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png'||file.contentType === 'image/jpg') {
-      const bucket = new mongoose.mongo.GridFSBucket(conn, { bucketName: 'uploads' })
+    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png' || file.contentType === 'image/jpg' || file.contentType === 'image/pdf') {
+      const bucket = new mongoose.mongo.GridFSBucket(conn, { bucketName: 'Certifications' })
       let readStream = bucket.openDownloadStream(file._id)
       readStream.pipe(res);
     } else {
       res.status(404).json({
-        err: 'Not an image'
+        err: 'Not in correct format'
       });
     }
   });
@@ -80,11 +80,11 @@ router.get('/image/:filename',fetchuser, (req, res) => {
 
 // @route DELETE /deleteavatar/:id
 // @desc  Delete profilephoto
-router.delete('/deleteavatar/:id',fetchuser,async (req, res) => {
+router.delete('/deleteavatar/:id', fetchuser, async (req, res) => {
   try {
-    
-    await gfs.files.deleteOne({ filename: req.params.id})
-    res.status(200).json({Success : true})
+
+    await gfs.files.deleteOne({ filename: req.params.id })
+    res.status(200).json({ Success: true })
   } catch (error) {
     res.status(404).json({
       err: 'Not found'
@@ -94,21 +94,104 @@ router.delete('/deleteavatar/:id',fetchuser,async (req, res) => {
 
 // @route POST /avatar
 // @desc  Uploads PROFILE PHOTO to Database
-router.post('/address',fetchuser, upload.single('file'),async (req, res) => {
-  User.findOneAndUpdate({ id: req.user.id }, { $set: { Address:{
-    city:req.body.city,
-    state:req.body.state,
-    pincode:req.body.pincode,
-    country:req.body.country,
-    lane1:req.body.lane1
-  } } }, { new: true }, (err, doc) => {
-    if (err) {
-      res.status(400).json({sucess:false,message:"Try again later something went wrong"})
+router.post('/address', fetchuser, upload.single('file'), async (req, res) => {
+  Freelancer.findOneAndUpdate({ id: req.user.id }, {
+    $set: {
+      Address: {
+        city: req.body.city,
+        state: req.body.state,
+        pincode: req.body.pincode,
+        country: req.body.country,
+        lane1: req.body.lane1
+      }
     }
-    else{
-      res.status(200).json({sucess:true})
+  }, { new: true }, (err, doc) => {
+    if (err) {
+      res.status(400).json({ sucess: false, message: "Try again later something went wrong" })
+    }
+    else {
+      res.status(200).json({ sucess: true })
     }
   });
 });
+
+
+// @route POST /about
+// @desc  about info to Database
+router.post('/about', fetchuser, async (req, res) => {
+  try {
+    Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { About: req.body.about } }, { new: true }, (err, doc) => {
+      if (err) {
+        res.status(400).json({ sucess: false, message: "Try again later something went wrong" })
+      }
+      else {
+        res.status(200).json({ sucess: true })
+      }
+    });
+  } catch (error) {
+
+  }
+})
+
+
+// @route POST /charge
+// @desc  charges info to Database
+router.post('/charge', fetchuser, async (req, res) => {
+  try {
+    Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { charge: req.body.charge } }, { new: true }, (err, doc) => {
+      if (err) {
+        res.status(400).json({ sucess: false, message: "Try again later something went wrong" })
+      }
+      else {
+        res.status(200).json({ sucess: true })
+      }
+    });
+  } catch (error) {
+
+  }
+})
+
+router.post('/banner', fetchuser, upload.single('file'), async (req, res) => {
+  Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { banner: `${hostname}/api/freelancerprofile/image/${req.file.filename}` } }, { new: true }, (err, doc) => {
+    if (err) {
+      res.status(400).json({ sucess: false, message: "Try again later something went wrong" })
+    }
+    else {
+      res.status(200).json({ sucess: true })
+    }
+  });
+});
+
+router.post("/reviewvendor", async (req, res) => {
+  let ratein = req.body.rate;
+  Freelancer.updateOne({ _id: req.body.vend },
+    { $push: { review: { rev: req.body.rev, rating: req.body.rate, author: req.body.author } } }, function (err, docs) {
+      if (err) {
+        console.log(err)
+        res.status(400).json({ sucess: false, message: "Try again later something went wrong" })
+      }
+      else {
+        res.status(200).json({ sucess: true })
+      }
+    })
+  
+  let avgrate = 0;
+  const foo = await Vendor.findById(req.body.vend).then(function (vendor) {
+    for (let i = 0; i < vendor.review.length; i++) {
+      avgrate = avgrate + parseInt(vendor.review[i].rating);
+    }
+    avgrate = (avgrate + parseInt(ratein)) / (vendor.review.length + 1)
+  })
+
+  Freelancer.findOneAndUpdate({ _id: req.body.vend }, { $set: { ratingavg: avgrate } }, { new: true }, (err, doc) => {
+    if (err) {
+      console.log("Something wrong when updating data!");
+    }
+  });
+});
+
+router.post('/test',async(req,res)=>{
+  console.log(req.body)
+})
 
 module.exports = router
