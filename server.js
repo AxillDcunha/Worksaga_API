@@ -9,7 +9,7 @@ const Freelancer = require('./models/freelancer');
 ConnectionDB();
 
 const app = express()
-app.use(helmet());
+
 
 const port = process.env.PORT || 5000
 
