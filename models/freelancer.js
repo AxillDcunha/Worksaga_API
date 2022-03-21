@@ -75,7 +75,7 @@ const FreelancerSchema = new Schema({
     },
     charge:{
         type:String
-    }
+    },
   });
   const Freelancer = mongoose.model('freelancer', FreelancerSchema);
   module.exports = Freelancer;

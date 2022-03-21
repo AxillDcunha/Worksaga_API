@@ -54,10 +54,22 @@ router.post('/avatar', fetchuser, upload.single('file'), async (req, res) => {
   });
 });
 
+router.post('/name', fetchuser, upload.single('file'), async (req, res) => {
+  Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { name: req.body.name,bio:req.body.bio } }, { new: true }, (err, doc) => {
+    if (err) {
+      res.status(200).json({ sucess: false, message: "Try again later something went wrong" })
+    }
+    else {
+      res.status(200).json({ sucess: true })
+    }
+  });
+  
+});
+
 
 // @route GET /image/:filename
 // @desc Display Image
-router.get('/image/:filename', fetchuser, (req, res) => {
+router.get('/image/:filename', (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
@@ -162,6 +174,54 @@ router.post('/banner', fetchuser, upload.single('file'), async (req, res) => {
   });
 });
 
+router.post('/cvandcertification', fetchuser, upload.single('file'), async (req, res) => {
+  try {
+    Freelancer.updateOne({ _id: req.user.id },
+      { $push: { CVandCert: `${hostname}/api/freelancerprofile/image/${req.file.filename}` } }, function (err, docs) {
+        if (err) {
+          console.log(err)
+          res.status(500).send("Internal Server Error");
+        }
+        else {
+          // console.log("Updated Docs : ", docs);
+          res.send("Success");
+        }
+      })
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+router.post('/experience', fetchuser, upload.single('file'), async (req, res) => {
+  try {
+    let title = req.body.title
+    let description = req.body.description
+    Freelancer.updateOne({ _id: req.user.id },
+      {
+        $push: {
+          experience: {
+            title: title,
+            description: description
+          }
+        }
+      }, function (err, docs) {
+        if (err) {
+          console.log(err)
+          res.status(500).send("Internal Server Error");
+        }
+        else {
+          // console.log("Updated Docs : ", docs);
+          res.send("Success");
+        }
+      })
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/reviewvendor", async (req, res) => {
   let ratein = req.body.rate;
   Freelancer.updateOne({ _id: req.body.vend },
@@ -174,7 +234,7 @@ router.post("/reviewvendor", async (req, res) => {
         res.status(200).json({ sucess: true })
       }
     })
-  
+
   let avgrate = 0;
   const foo = await Vendor.findById(req.body.vend).then(function (vendor) {
     for (let i = 0; i < vendor.review.length; i++) {
@@ -190,8 +250,6 @@ router.post("/reviewvendor", async (req, res) => {
   });
 });
 
-router.post('/test',async(req,res)=>{
-  console.log(req.body)
-})
+
 
 module.exports = router

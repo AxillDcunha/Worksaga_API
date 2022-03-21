@@ -43,7 +43,7 @@ const upload = multer({ storage });
 
 // @route POST /avatar
 // @desc  Uploads PROFILE PHOTO to Database
-router.post('/avatar', fetchuser, upload.single('file'), async (req, res) => {
+router.post('/avatar',  upload.single('file'), async (req, res) => {
   User.findOneAndUpdate({ _id: req.user.id }, { $set: { Avatar: `${hostname}/api/userprofile/image/${req.file.filename}` } }, { new: true }, (err, doc) => {
     if (err) {
       res.status(200).json({ sucess: false, message: "Try again later something went wrong" })
@@ -57,7 +57,7 @@ router.post('/avatar', fetchuser, upload.single('file'), async (req, res) => {
 
 // @route GET /image/:filename
 // @desc Display Image
-router.get('/image/:filename', fetchuser, (req, res) => {
+router.get('/image/:filename', (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
@@ -114,5 +114,6 @@ router.post('/address', fetchuser, upload.single('file'), async (req, res) => {
     }
   });
 });
+
 
 module.exports = router

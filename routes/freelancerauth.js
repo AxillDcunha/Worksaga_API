@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/user');
+const User = require('../models/freelancer');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -17,7 +17,6 @@ router.post('/createuser', [
     body('password', 'Password must be atleast 8 characters').isLength({ min: 8 }),
     body('mobileNo', 'Enter a valid Number').isLength({ min: 10 }),
 ], async (req, res) => {
-  
     // If there are errors, return Bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

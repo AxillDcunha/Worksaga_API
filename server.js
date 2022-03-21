@@ -18,6 +18,7 @@ app.use(express.json())
 
 //Available Routes
 app.use("/api/auth",require("./routes/auth"))
+app.use("/api/freelancerauth",require("./routes/freelancerauth"))
 app.use("/api/user",require("./routes/userdata"))
 app.use("/api/userprofile",require("./routes/user/userprofile"))
 app.use("/api/freelancerprofile",require("./routes/freelancer/freelancerprofile"))
