@@ -44,11 +44,12 @@ const upload = multer({ storage });
 // @route POST /avatar
 // @desc  Uploads PROFILE PHOTO to Database
 router.post('/avatar', fetchuser, upload.single('file'), async (req, res) => {
-  Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { Avatar: `${hostname}/api/userprofile/image/${req.file.filename}` } }, { new: true }, (err, doc) => {
+  Freelancer.findOneAndUpdate({ _id: req.user.id }, { $set: { Avatar: `${hostname}/api/freelancerprofile/image/${req.file.filename}` } }, { new: true }, (err, doc) => {
     if (err) {
       res.status(200).json({ sucess: false, message: "Try again later something went wrong" })
     }
     else {
+      console.log(doc)
       res.status(200).json({ sucess: true })
     }
   });
