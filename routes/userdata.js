@@ -82,7 +82,7 @@ router.post('/deletealllocation', fetchuser, async (req, res) => {
 router.get('/findfreelancers', async (req, res) => {
   try {
     let type="electrician";
-    const data=await Freelancer.find({"category":type})
+    const data=await Freelancer.find({"category":type}).select("-password")
     res.send(data)
   } catch (error) {
     console.error(error.message);
