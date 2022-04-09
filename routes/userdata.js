@@ -2,6 +2,8 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 var fetchuser = require('../middleware/fetchuser');
+const Freelancer = require('../models/freelancer');
+const { request } = require('express');
 
 
 // ROUTE 1: update user location using: 
@@ -71,6 +73,17 @@ router.post('/deletealllocation', fetchuser, async (req, res) => {
 
         }
       })
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+router.get('/findfreelancers', async (req, res) => {
+  try {
+    let type="electrician";
+    const data=await Freelancer.find({"category":type})
+    res.send(data)
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
