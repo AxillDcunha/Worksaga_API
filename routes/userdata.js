@@ -83,7 +83,7 @@ router.get('/findfreelancers', async (req, res) => {
   try {
     let type="electrician";
     const data=await Freelancer.find({"category":type}).select("-password")
-    res.send(data)
+    res.status(200).send(data)
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
