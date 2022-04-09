@@ -90,4 +90,15 @@ router.get('/findfreelancers', async (req, res) => {
   }
 })
 
+router.get('/findfreelancers/:id', async (req, res) => {
+  try {
+    let id=req.params.id;
+    const data=await Freelancer.findById(id).select("-password")
+    res.status(200).send(data)
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
 module.exports = router
