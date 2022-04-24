@@ -105,7 +105,7 @@ router.get('/findfreelancers/:id', async (req, res) => {
 //not tested yet
 router.post('bookfreelancer/:id', fetchuser,async (req,res)=>{
   try {
-    const f=Freelancer.findById(req.params.id);
+    const f=await Freelancer.findById(req.params.id);
     if(!f){
       res.status(404).send("Freelancer not found");
     }
@@ -121,7 +121,7 @@ router.post('bookfreelancer/:id', fetchuser,async (req,res)=>{
             res.send("Success");
           }
         })
-        const u=User.findById(req.user.id);
+        const u=await User.findById(req.user.id);
         Freelancer.updateOne({ _id: req.params.id },
           { $push: { pendingCustomers: {userId:req.user.id,userName:u.name,freelancerEmail:u.email} } }, function (err, docs) {
             if (err) {
@@ -143,7 +143,7 @@ router.post('bookfreelancer/:id', fetchuser,async (req,res)=>{
 
 router.post('/bookmark/:id',fetchuser,async(req,res)=>{
   try {
-    const fl=Freelancer.findById(req.params.id);
+    const fl=await Freelancer.findById(req.params.id);
     console.log(fl);
     if(!fl){
       res.status(404).send("Freelancer not found");
@@ -170,7 +170,7 @@ router.post('/bookmark/:id',fetchuser,async(req,res)=>{
 //get bookmark pending
 router.get('/getbookmarks',fetchuser,async (req,res)=>{
   try {
-    const us=User.findById(req.user.id);
+    const us=await User.findById(req.user.id);
     res.send(us.bookmarks)
   } catch (error) {
     console.error(error.message);
