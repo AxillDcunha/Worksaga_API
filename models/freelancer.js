@@ -56,6 +56,10 @@ const FreelancerSchema = new Schema({
         type:Array,
         default:[]
     },
+    pendingCustomers:{
+        type:Array,
+        default:[]
+    },
     avgRating:{
         type: Number
     },
