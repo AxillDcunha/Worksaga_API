@@ -144,6 +144,7 @@ router.post('bookfreelancer/:id', fetchuser,async (req,res)=>{
 router.post('/bookmark/:id',fetchuser,async(req,res)=>{
   try {
     const fl=Freelancer.findById(req.params.id);
+    console.log(fl);
     if(!fl){
       res.status(404).send("Freelancer not found");
     }
