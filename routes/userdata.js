@@ -81,8 +81,8 @@ router.post('/deletealllocation', fetchuser, async (req, res) => {
 
 router.get('/findfreelancers', async (req, res) => {
   try {
-    let type="electrician";
-    const data=await Freelancer.find({"category":type}).select("-password")
+    let type = "electrician";
+    const data = await Freelancer.find({ "category": type }).select("-password")
     res.status(200).send(data)
   } catch (error) {
     console.error(error.message);
@@ -92,8 +92,8 @@ router.get('/findfreelancers', async (req, res) => {
 
 router.get('/findfreelancers/:id', async (req, res) => {
   try {
-    let id=req.params.id;
-    const data=await Freelancer.findById(id).select("-password")
+    let id = req.params.id;
+    const data = await Freelancer.findById(id).select("-password")
     res.status(200).send(data)
   } catch (error) {
     console.error(error.message);
@@ -103,15 +103,15 @@ router.get('/findfreelancers/:id', async (req, res) => {
 
 
 //not tested yet
-router.post('bookfreelancer/:id', fetchuser,async (req,res)=>{
+router.post('bookfreelancer/:id', fetchuser, async (req, res) => {
   try {
-    const f=await Freelancer.findById(req.params.id);
-    if(!f){
+    const f = await Freelancer.findById(req.params.id);
+    if (!f) {
       res.status(404).send("Freelancer not found");
     }
-    else{
+    else {
       User.updateOne({ _id: req.user.id },
-        { $push: { upcomingBookings: {freelancerId:req.params.id,freelancerName:f.name,freelancerEmail:f.email,mobileNo:f.mobileNo} } }, function (err, docs) {
+        { $push: { upcomingBookings: { freelancerId: req.params.id, freelancerName: f.name, freelancerEmail: f.email, mobileNo: f.mobileNo } } }, function (err, docs) {
           if (err) {
             console.log(err)
             res.status(500).send("Internal Server Error");
@@ -121,36 +121,36 @@ router.post('bookfreelancer/:id', fetchuser,async (req,res)=>{
             res.send("Success");
           }
         })
-        const u=await User.findById(req.user.id);
-        Freelancer.updateOne({ _id: req.params.id },
-          { $push: { upcomingCustomers: {userId:req.user.id,userName:u.name,userEmail:u.email,userNo:req.body.mobileNo,jobDescription:req.body.jobdescription,Useraddress:req.body.jobdescription} } }, function (err, docs) {
-            if (err) {
-              console.log(err)
-              res.status(500).send("Internal Server Error");
-            }
-            else {
-              // console.log("Updated Docs : ", docs);
-              res.send("Success");
-            }
-          })
+      const u = await User.findById(req.user.id);
+      Freelancer.updateOne({ _id: req.params.id },
+        { $push: { upcomingCustomers: { userId: req.user.id, userName: u.name, userEmail: u.email, userNo: req.body.mobileNo, jobDescription: req.body.jobdescription, Useraddress: req.body.jobdescription } } }, function (err, docs) {
+          if (err) {
+            console.log(err)
+            res.status(500).send("Internal Server Error");
+          }
+          else {
+            // console.log("Updated Docs : ", docs);
+            res.send("Success");
+          }
+        })
     }
-    
+
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
   }
 })
 
-router.post('/bookmark/:id',fetchuser,async(req,res)=>{
+router.post('/bookmark/:id', fetchuser, async (req, res) => {
   try {
-    const fl=await Freelancer.findById(req.params.id);
+    const fl = await Freelancer.findById(req.params.id);
     console.log(fl);
-    if(!fl){
+    if (!fl) {
       res.status(404).send("Freelancer not found");
     }
-    else{
+    else {
       User.updateOne({ _id: req.user.id },
-        { $push: { bookmarks: {freelancerId:req.params.id,freelancerName:fl.name,freelancerEmail:fl.email} } }, function (err, docs) {
+        { $push: { bookmarks: { freelancerId: req.params.id, freelancerName: fl.name, freelancerEmail: fl.email } } }, function (err, docs) {
           if (err) {
             console.log(err)
             res.status(500).send("Internal Server Error");
@@ -168,9 +168,9 @@ router.post('/bookmark/:id',fetchuser,async(req,res)=>{
 })
 
 //get bookmark pending
-router.get('/getbookmarks',fetchuser,async (req,res)=>{
+router.get('/getbookmarks', fetchuser, async (req, res) => {
   try {
-    const us=await User.findById(req.user.id);
+    const us = await User.findById(req.user.id);
     res.send(us.bookmarks)
   } catch (error) {
     console.error(error.message);

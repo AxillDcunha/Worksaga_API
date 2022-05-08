@@ -63,6 +63,7 @@ router.post('/login', [
     body('email', 'Enter a valid Email').isEmail(),
     body('password', 'Password cannot be Empty').exists(),
 ], async (req, res) => {
+    console.log(req);
     let success = false;
     // If there are errors, return Bad request and the errors
     const errors = validationResult(req);
