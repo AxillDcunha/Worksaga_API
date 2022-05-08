@@ -103,7 +103,7 @@ router.get('/findfreelancers/:id', async (req, res) => {
 
 
 //not tested yet
-router.post('bookfreelancer/:id', fetchuser, async (req, res) => {
+router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
   try {
     const f = await Freelancer.findById(req.params.id);
     if (!f) {
