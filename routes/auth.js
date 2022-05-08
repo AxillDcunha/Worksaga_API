@@ -63,7 +63,7 @@ router.post('/login', [
     body('email', 'Enter a valid Email').isEmail(),
     body('password', 'Password cannot be Empty').exists(),
 ], async (req, res) => {
-    console.log(req);
+    console.log(req.body);
     let success = false;
     // If there are errors, return Bad request and the errors
     const errors = validationResult(req);
@@ -74,6 +74,7 @@ router.post('/login', [
     const { email, password } = req.body;
     try {
         let user = await User.findOne({ email });
+        console.log(user)
         if (!user) {
             success = false
             return res.status(400).json({ error: "Please try to login with correct credentials" });
@@ -82,6 +83,7 @@ router.post('/login', [
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
             success = false
+            console.log('hi')
             return res.status(400).json({ success, error: "Please try to login with correct credentials" });
         }
 
