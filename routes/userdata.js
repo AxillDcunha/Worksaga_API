@@ -112,7 +112,7 @@ router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
     }
     else {
       User.updateOne({ _id: req.user.id },
-        { $push: { upcomingBookings: { freelancerId: req.params.id, freelancerName: f.name, freelancerEmail: f.email, mobileNo: f.mobileNo } } }, function (err, docs) {
+        { $push: { upcomingBookings: { freelancerId: req.params.id, freelancerName: f.name, freelancerEmail: f.email, mobileNo: f.mobileNo, bio: f.bio, Avatar: f.Avatar } } }, function (err, docs) {
           if (err) {
             console.log(err)
             res.status(500).send("Internal Server Error");
@@ -124,7 +124,7 @@ router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
         })
       const u = await User.findById(req.user.id);
       Freelancer.updateOne({ _id: req.params.id },
-        { $push: { upcomingCustomers: { userId: req.user.id, userName: u.name, userEmail: u.email, userNo: req.body.mobileNo, jobDescription: req.body.jobdescription, Useraddress: req.body.jobdescription } } }, function (err, docs) {
+        { $push: { upcomingCustomers: { userId: req.user.id, userName: u.name, userEmail: u.email, userNo: req.body.mobileNo, jobDescription: req.body.jobdescription, Useraddress: req.body.jobdescription, Avatar: u.Avatar } } }, function (err, docs) {
           if (err) {
             console.log(err)
             res.status(500).send("Internal Server Error");
