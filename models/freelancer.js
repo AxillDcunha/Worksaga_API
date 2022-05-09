@@ -83,6 +83,9 @@ const FreelancerSchema = new Schema({
     rating:{
         type:Number,
     },
+    category:{
+        type:String,
+    }
   });
   const Freelancer = mongoose.model('freelancer', FreelancerSchema);
   module.exports = Freelancer;

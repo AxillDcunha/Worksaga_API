@@ -82,7 +82,8 @@ router.post('/deletealllocation', fetchuser, async (req, res) => {
 router.get('/findfreelancerstype/:type', async (req, res) => {
   try {
     let type = req.params.type;
-    const data = await Freelancer.find({ "category": type }).select("-password")
+    console.log(type)
+    const data = await Freelancer.find({ "category": `${type}` }).select("-password")
     res.status(200).send(data)
   } catch (error) {
     console.error(error.message);
