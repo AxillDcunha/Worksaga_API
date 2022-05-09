@@ -79,9 +79,9 @@ router.post('/deletealllocation', fetchuser, async (req, res) => {
   }
 })
 
-router.get('/findfreelancers', async (req, res) => {
+router.get('/findfreelancerstype/:type', async (req, res) => {
   try {
-    let type = "electrician";
+    let type = req.params.type;
     const data = await Freelancer.find({ "category": type }).select("-password")
     res.status(200).send(data)
   } catch (error) {
@@ -117,7 +117,7 @@ router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
             res.status(500).send("Internal Server Error");
           }
           else {
-            // console.log("Updated Docs : ", docs);
+            console.log("Updated Docs : ", docs);
             res.send("Success");
           }
         })
