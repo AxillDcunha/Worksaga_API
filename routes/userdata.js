@@ -124,7 +124,7 @@ router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
         })
       const u = await User.findById(req.user.id);
       Freelancer.updateOne({ _id: req.params.id },
-        { $push: { upcomingCustomers: { userId: req.user.id, userName: u.name, userEmail: u.email, userNo: req.body.mobileNo, jobDescription: req.body.jobdescription, Useraddress: req.body.jobdescription, Avatar: u.Avatar } } }, function (err, docs) {
+        { $push: { upcomingCustomers: { userId: req.user.id, userName: u.name, userEmail: u.email, userNo: req.body.mobileNo, jobDescription: req.body.jobdescription, Useraddress: req.body.address, Avatar: u.Avatar } } }, function (err, docs) {
           if (err) {
             console.log(err)
             res.status(500).send("Internal Server Error");
