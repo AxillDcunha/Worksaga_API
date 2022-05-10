@@ -151,7 +151,7 @@ router.post('/bookmark/:id', fetchuser, async (req, res) => {
     }
     else {
       User.updateOne({ _id: req.user.id },
-        { $push: { bookmarks: { freelancerId: req.params.id, freelancerName: fl.name, freelancerEmail: fl.email } } }, function (err, docs) {
+        { $push: { bookmarks: { freelancerId: req.params.id, freelancerName: fl.name, freelancerEmail: fl.email ,Avatar:fl.Avatar} } }, function (err, docs) {
           if (err) {
             console.log(err)
             res.status(500).send("Internal Server Error");
