@@ -2,90 +2,99 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const FreelancerSchema = new Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    email:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    mobileNo:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    password:{
+    name: {
         type: String,
         required: true
     },
-    createdAt:{
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    mobileNo: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    createdAt: {
         type: Date,
         default: Date.now
     },
-    location:{  
-        type:Array,
-        default:[]
+    location: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+        
+          },
+          coordinates: {
+            type: [Number],
+            index:'2dshpere'
+          }
     },
-    bio:{
+    bio: {
         type: String,
     },
-    About:{
+    About: {
         type: String,
     },
-    Avatar:{
-        type:String
+    Avatar: {
+        type: String
     },
-    Address:{
-        city:{
-            type:String
+    Address: {
+        city: {
+            type: String
         },
-        state:{
-            type:String
+        state: {
+            type: String
         },
-        pincode:{
-            type:Number
+        pincode: {
+            type: Number
         },
     },
-    pastCustomers:{
-        type:Array,
-        default:[]
+    pastCustomers: {
+        type: Array,
+        default: []
     },
-    upcomingCustomers:{
-        type:Array,
-        default:[]
+    upcomingCustomers: {
+        type: Array,
+        default: []
     },
-    pendingCustomers:{
-        type:Array,
-        default:[]
+    pendingCustomers: {
+        type: Array,
+        default: []
     },
-    avgRating:{
+    avgRating: {
         type: Number
     },
-    review:{
-        type:Array,
+    review: {
+        type: Array,
     },
-    experience:{
-        type:Array,
-        default:[]
+    experience: {
+        type: Array,
+        default: []
     },
-    banner:{
-        type:String
+    banner: {
+        type: String
     },
-    CVandCert:{
-        type:Array,
-        default:[]
+    CVandCert: {
+        type: Array,
+        default: []
     },
-    charge:{
-        type:String
+    charge: {
+        type: String
     },
-    rating:{
-        type:Number,
+    rating: {
+        type: Number,
     },
-    category:{
-        type:String,
+    category: {
+        type: String,
     }
-  });
-  const Freelancer = mongoose.model('freelancer', FreelancerSchema);
-  module.exports = Freelancer;
+});
+const Freelancer = mongoose.model('freelancer', FreelancerSchema);
+FreelancerSchema.index({ name: 'text', 'Address.city': 'text', 'Address.state': 'text', category: 'text' });
+FreelancerSchema.index({ "location": "2dsphere" });
+module.exports = Freelancer;

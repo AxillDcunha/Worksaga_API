@@ -179,4 +179,27 @@ router.get('/getbookmarks', fetchuser, async (req, res) => {
   }
 })
 
+
+router.post('/search', async (req, res) => {
+  try {
+    let searchterm = "Axill";
+
+    let vendor = await Freelancer.find({ $text: { $search: searchterm, $diacriticSensitive: true } }).select("-password").then(function (vendor) {
+      res.send(vendor);
+    })
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+router.post('/sort', fetchuser, async (req, res) => {
+  try {
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
 module.exports = router
