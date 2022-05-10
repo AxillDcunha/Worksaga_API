@@ -66,6 +66,18 @@ router.post('/banner', fetchuser, upload.single('file'), async (req, res) => {
 });
 
 
+router.post('/editdetails', fetchuser, upload.single('file'), async (req, res) => {
+  User.findOneAndUpdate({ _id: req.user.id }, { $set: { name: req.body.name },$set: { email: req.body.email },$set: { mobileNo: req.body.mobileNo } }, { new: true }, (err, doc) => {
+    if (err) {
+      res.status(200).json({ sucess: false, message: "Try again later something went wrong" })
+    }
+    else {
+      res.status(200).json({ sucess: true })
+    }
+  });
+});
+
+
 // @route GET /image/:filename
 // @desc Display Image
 router.get('/image/:filename', (req, res) => {
