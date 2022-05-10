@@ -118,7 +118,7 @@ router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
             res.status(500).send("Internal Server Error");
           }
           else {
-            console.log("Updated Docs : ", docs);
+            // console.log("Updated Docs : ", docs);
             res.send("Success");
           }
         })
