@@ -119,7 +119,7 @@ router.post('/bookfreelancer/:id', fetchuser, async (req, res) => {
           }
           else {
             // console.log("Updated Docs : ", docs);
-            res.send("Success");
+            // res.send("Success");
           }
         })
       const u = await User.findById(req.user.id);
